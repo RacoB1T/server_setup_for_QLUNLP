@@ -87,19 +87,17 @@ main() {
 
     print_summary
 
-    # 刷新当前 shell 环境
-    if [ -f "$HOME/.bashrc" ]; then
-        log_info "执行 source ~/.bashrc ..."
-        # shellcheck disable=SC1090
-        . "$HOME/.bashrc"
-    fi
-
     if $has_error; then
         log_warn "部分模块安装失败，请查看上方日志"
         exit 1
     else
         log_success "全部完成！"
     fi
+
+    echo ""
+    log_info "请手动执行以下命令使环境变量生效："
+    echo -e "  ${COLOR_BOLD}source ~/.bashrc${COLOR_RESET}"
+    echo ""
 }
 
 main "$@"

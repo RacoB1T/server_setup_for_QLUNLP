@@ -5,10 +5,10 @@
 # 依赖：common.sh 需先被 source
 # ============================================================
 
-# NVM 安装脚本地址
-readonly NVM_VERSION="v0.40.1"
-readonly NVM_INSTALL_URL="https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh"
-readonly NVM_GITEE_REPO="https://gitee.com/mirrors/nvm.git"
+# NVM 安装脚本地址（不用 readonly，避免与 nvm.sh 内部变量冲突）
+NVM_VERSION="v0.40.1"
+NVM_INSTALL_URL="https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh"
+NVM_GITEE_REPO="https://gitee.com/mirrors/nvm.git"
 
 # 尝试下载 URL，支持自动 fallback
 # 用法: fetch_url <url> [fallback_url]
