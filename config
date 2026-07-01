@@ -1,0 +1,34 @@
+# ===========================================
+# Environment Setup Configuration
+# 修改此文件以自定义安装行为
+# ===========================================
+
+# --- 模块开关 ---
+# 设置为 "false" 跳过对应模块
+INSTALL_NODE=true
+INSTALL_GIT=true
+INSTALL_CLASH=true
+INSTALL_CLAUDE=true
+INSTALL_CODEX=true
+
+# --- Git 全局配置 ---
+# 仅在 git 首次安装时设置，若已有值则不覆盖
+GIT_USER_NAME=""
+GIT_USER_EMAIL=""
+GIT_DEFAULT_BRANCH="main"
+
+# --- Clash 配置 ---
+# 机场订阅链接（留空则手动配置）
+CLASH_SUBSCRIBE_URL=""
+# 内核类型: mihomo 或 clash
+CLASH_KERNEL="mihomo"
+# 安装路径（默认 ~/clashctl）
+CLASH_BASE_DIR="$HOME/clashctl"
+# GitHub 下载代理（国内用户可设置 https://gh-proxy.com/ 等）
+GH_PROXY=""
+
+# --- Node.js 配置 ---
+# Node.js 版本（默认 lts/*，也支持 "20" 或 "18" 等）
+NODE_VERSION="lts/*"
+# npm 镜像（国内用户可设置 https://registry.npmmirror.com）
+NPM_REGISTRY_MIRROR=""
