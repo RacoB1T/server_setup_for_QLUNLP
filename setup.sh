@@ -64,6 +64,7 @@ source "$MODULES_DIR/codex.sh"
 # ============================================================
 main() {
     acquire_lock
+    trap release_lock EXIT
     init_setup
 
     # 按依赖顺序执行各模块

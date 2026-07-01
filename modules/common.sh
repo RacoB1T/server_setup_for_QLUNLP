@@ -301,13 +301,42 @@ print_summary() {
 # ============================================================
 # 锁文件（防止并发运行）
 # ============================================================
+LOCKFILE="/tmp/env-setup.lock"
+
+# 检查持有锁的进程是否还活着
+_lock_owner_alive() {
+    local pid
+    pid=$(cat "$LOCKFILE" 2>/dev/null || true)
+    if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
+        return 0  # 进程还活着
+    fi
+    return 1  # 进程已死或无法读取 PID
+}
+
 acquire_lock() {
-    LOCKFILE="/tmp/env-setup.lock"
+    # 如果锁文件存在但进程已死，清理残留锁
+    if [ -f "$LOCKFILE" ]; then
+        if ! _lock_owner_alive; then
+            log_warn "检测到残留锁文件（进程已退出），自动清理"
+            rm -f "$LOCKFILE"
+        fi
+    fi
+
     exec 200>"$LOCKFILE"
     if ! flock -n 200; then
         log_error "检测到另一个 setup 进程正在运行 (lock: $LOCKFILE)"
+        if _lock_owner_alive; then
+            log_error "进程 PID: $(cat "$LOCKFILE") 仍在运行"
+        fi
         exit 1
     fi
+
+    # 写入当前 PID
+    echo $$ > "$LOCKFILE"
+}
+
+release_lock() {
+    rm -f "$LOCKFILE"
 }
 
 # ============================================================
