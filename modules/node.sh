@@ -44,16 +44,21 @@ _fetch() {
 # 确保 ~/.bashrc 中有 nvm auto-use 逻辑，source 后自动激活 default node
 _ensure_nvm_autouse() {
     local bashrc="$HOME/.bashrc"
-    local marker="nvm use default"
-
     [ ! -f "$bashrc" ] && return 0
-    grep -q "$marker" "$bashrc" 2>/dev/null && return 0
+
+    # 清理之前可能写入的旧版 auto-use 行（含错误语法）
+    sed -i '/^# nvm: auto-activate/,/^fi$/d' "$bashrc"
+    sed -i '/^\[ -s.*nvm\.sh.*&&.*nvm use default/d' "$bashrc"
 
     log_info "添加 nvm auto-use 到 ~/.bashrc ..."
     cat >> "$bashrc" << 'NVM_AUTOUSE'
 
 # nvm: auto-activate default node version on shell start
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && nvm use default --silent 2>/dev/null || true
+if [ -s "$HOME/.nvm/nvm.sh" ]; then
+    export NVM_DIR="$HOME/.nvm"
+    \. "$NVM_DIR/nvm.sh"
+    nvm use default > /dev/null 2>&1 || true
+fi
 NVM_AUTOUSE
 }
 
