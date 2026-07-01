@@ -5,6 +5,7 @@
 
 # --- 模块开关 ---
 # 设置为 "false" 跳过对应模块
+INSTALL_GCC=true       # GCC/G++ 编译工具链
 INSTALL_NODE=true
 INSTALL_GIT=true
 INSTALL_CLASH=true

@@ -21,6 +21,7 @@
 
 | 工具 | 用途 | 安装方式 | 依赖 |
 |------|------|----------|------|
+| **GCC / G++** | C/C++ 编译工具链 | 系统包管理器 | 无 |
 | **Node.js + NVM** | JavaScript 运行时，nvm 管理多版本 | Gitee 镜像 → gh-proxy 兜底 | curl, git |
 | **Git** | 版本控制 + 全局配置 | 系统包管理器 | 无 |
 | **Clash** | 代理/VPN（mihomo 内核） | 封装 clash-for-linux 安装器，走 gh-proxy | curl, wget, xz-utils |
@@ -70,6 +71,7 @@ NVM 会自动 fallback 到 GitHub 直连。
 ### 模块开关
 
 ```bash
+INSTALL_GCC=true       # GCC/G++ 编译工具链
 INSTALL_NODE=true      # Node.js + NVM（claude/codex 的前置依赖）
 INSTALL_GIT=true       # Git
 INSTALL_CLASH=true     # Clash 代理
@@ -137,6 +139,7 @@ setup.sh 入口
   ├─ 2. 检测 OS 和包管理器
   ├─ 3. 初始化状态目录
   │
+  ├─ gcc.sh     ← 系统包管理器
   ├─ node.sh    ← NVM (Gitee → gh-proxy → 直连)
   │                 ↓ 设 NVM_NODEJS_ORG_MIRROR
   │                 ↓ nvm install node
@@ -189,6 +192,7 @@ setup/
 ├── config                             # 用户配置文件
 ├── modules/
 │   ├── common.sh                      # 公共库：日志、OS 检测、包管理器、幂等标记
+│   ├── gcc.sh                         # GCC/G++ 编译工具链
 │   ├── node.sh                        # NVM + Node.js（三级 fallback）
 │   ├── git.sh                         # Git 安装 + 全局配置
 │   ├── clash.sh                       # Clash（封装已有安装器，注入 gh-proxy）
