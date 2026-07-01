@@ -14,6 +14,7 @@
 - [工作流程](#工作流程)
 - [支持的发行版](#支持的发行版)
 - [项目结构](#项目结构)
+- [Clash 使用参考](#clash-使用参考)
 - [常见问题](#常见问题)
 
 ## 安装的工具
@@ -200,6 +201,95 @@ setup/
 └── README.md
 ```
 
+## Clash 使用参考
+
+> 以下命令封装自 [clash-for-linux](https://github.com/nelvko/clash-for-linux-install)，更多详情见 [Wiki](https://github.com/nelvko/clash-for-linux-install/wiki/FAQ)。
+
+### 基本操作
+
+```bash
+clashon           # 开启代理（同步设置系统代理）
+clashoff          # 关闭代理（同步取消系统代理）
+clashctl status   # 查看内核运行状态
+clashproxy        # 单独控制系统代理开关
+```
+
+### Web 控制台
+
+```bash
+clashui           # 查看 Web 面板地址（默认端口 9090）
+clashsecret       # 查看当前密钥
+clashsecret xxx   # 设置新密钥（自动重启生效）
+```
+
+可通过浏览器打开控制台进行可视化操作：切换节点、查看日志、测速等。
+
+### 订阅管理
+
+```bash
+clashsub add <url>        # 添加订阅（支持本地文件: file:///path）
+clashsub ls               # 查看所有订阅
+clashsub use <id>         # 切换到指定订阅
+clashsub update [id]      # 更新订阅（可选指定 id）
+clashsub del <id>         # 删除订阅
+clashsub log              # 查看订阅更新日志
+```
+
+订阅更新选项：
+
+```bash
+clashsub update --auto     # 更新并配置定时自动更新
+clashsub update --convert  # 使用本地订阅转换
+```
+
+自动更新任务可通过 `crontab -e` 修改。
+
+### Mixin 配置
+
+通过 Mixin 对订阅规则进行自定义，与原始订阅深度合并，Mixin 优先级最高。
+
+```bash
+clashmixin       # 查看 Mixin 配置
+clashmixin -e    # 编辑 Mixin 配置
+clashmixin -c    # 查看原始订阅配置
+clashmixin -r    # 查看运行时配置（合并后的最终结果）
+```
+
+### Tun 模式
+
+代理本机和 Docker 等容器的全部流量，支持 DNS 劫持。
+
+```bash
+clashtun         # 查看 Tun 状态
+clashtun on      # 开启 Tun 模式
+clashtun off     # 关闭 Tun 模式
+```
+
+### 升级内核
+
+```bash
+clashupgrade     # 升级 mihomo 内核到最新版本
+clashupgrade -v  # 查看详细升级日志
+```
+
+### 命令速查
+
+```bash
+clashctl COMMAND [OPTIONS]
+
+Commands:
+    on              开启代理
+    off             关闭代理
+    status          内核状况
+    proxy           系统代理
+    ui              Web 面板
+    secret          Web 密钥
+    sub             订阅管理
+    upgrade         升级内核
+    tun             Tun 模式
+    mixin           Mixin 配置
+```
+
 ## 常见问题
 
 ### Q: 只需要安装部分工具？
@@ -214,11 +304,11 @@ bash setup.sh
 
 ### Q: 安装 Clash 后怎么用？
 
+详见上方 [Clash 使用参考](#clash-使用参考)。快速上手：
+
 ```bash
 clashon          # 开启代理
 clashoff         # 关闭代理
-clashctl status  # 查看状态
-clashsub         # 管理订阅
 ```
 
 ### Q: 如何在多台机器间同步配置？
