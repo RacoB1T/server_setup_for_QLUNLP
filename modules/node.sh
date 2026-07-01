@@ -41,6 +41,22 @@ _fetch() {
     return 1
 }
 
+# 确保 ~/.bashrc 中有 nvm auto-use 逻辑，source 后自动激活 default node
+_ensure_nvm_autouse() {
+    local bashrc="$HOME/.bashrc"
+    local marker="nvm use default"
+
+    [ ! -f "$bashrc" ] && return 0
+    grep -q "$marker" "$bashrc" 2>/dev/null && return 0
+
+    log_info "添加 nvm auto-use 到 ~/.bashrc ..."
+    cat >> "$bashrc" << 'NVM_AUTOUSE'
+
+# nvm: auto-activate default node version on shell start
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && nvm use default --silent 2>/dev/null || true
+NVM_AUTOUSE
+}
+
 install_node() {
     if [ -z "${NVM_DIR:-}" ]; then
         export NVM_DIR="$HOME/.nvm"
@@ -127,6 +143,9 @@ install_node() {
         log_info "设置 npm registry: $NPM_REGISTRY_MIRROR"
         npm config set registry "$NPM_REGISTRY_MIRROR"
     fi
+
+    # 6. 确保 source ~/.bashrc 后自动激活 node
+    _ensure_nvm_autouse
 
     return 0
 }
