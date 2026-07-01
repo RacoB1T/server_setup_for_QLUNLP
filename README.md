@@ -1,6 +1,6 @@
 # Environment Setup
 
-在新服务器上一键安装开发环境：Clash、Git、Claude Code、Codex CLI。
+换机器时一键安装开发环境：Clash、Git、Claude Code、Codex CLI。
 
 **默认配置国内可直接使用，无需开启代理。**
 

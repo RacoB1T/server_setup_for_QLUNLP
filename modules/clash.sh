@@ -2,6 +2,42 @@
 # clash.sh — Clash (mihomo) 安装模块
 # 封装已有的 clash-for-linux-install-master 安装器
 
+# 安装后交互式询问订阅链接
+_prompt_subscription() {
+    local clash_dir="${CLASH_BASE_DIR:-$HOME/clashctl}"
+
+    # 加载 clashctl 函数
+    if [ -f "$clash_dir/scripts/cmd/clashctl.sh" ]; then
+        # shellcheck disable=SC1090
+        . "$clash_dir/scripts/cmd/clashctl.sh"
+    fi
+
+    # 如果 config 中已预设了订阅链接，跳过询问
+    if [ -n "${CLASH_SUBSCRIBE_URL:-}" ]; then
+        log_info "已使用预设订阅链接，跳过手动输入"
+        return 0
+    fi
+
+    echo ""
+    log_info "是否要添加 Clash 订阅链接？"
+    echo -n "输入订阅链接 (直接回车跳过): "
+
+    local sub_url
+    read -r sub_url </dev/tty 2>/dev/null || read -r sub_url
+
+    if [ -n "$sub_url" ]; then
+        log_info "正在添加订阅..."
+        if clashsub add "$sub_url" 2>/dev/null; then
+            clashsub use 1 2>/dev/null
+            log_success "订阅已添加并启用"
+        else
+            log_warn "订阅添加失败，请手动执行: clashsub add <url>"
+        fi
+    else
+        log_skip "跳过订阅配置，后续可手动执行: clashsub add <url>"
+    fi
+}
+
 install_clash() {
     local clash_src="$SETUP_DIR/clash-for-linux-install-master"
     local clash_env="$clash_src/.env"
@@ -71,6 +107,10 @@ install_clash() {
     if bash install.sh "${install_args[@]}"; then
         log_success "Clash 安装完成"
         cd "$SETUP_DIR"
+
+        # 6. 安装后：交互式询问是否添加订阅链接
+        _prompt_subscription
+
         return 0
     else
         log_error "Clash 安装失败"
