@@ -24,11 +24,14 @@ CLASH_SUBSCRIBE_URL=""
 CLASH_KERNEL="mihomo"
 # 安装路径（默认 ~/clashctl）
 CLASH_BASE_DIR="$HOME/clashctl"
-# GitHub 下载代理（国内用户可设置 https://gh-proxy.com/ 等）
-GH_PROXY=""
+# GitHub 下载代理，国内默认使用 gh-proxy
+# 可选: https://gh-proxy.com/ 或 https://mirror.ghproxy.com/
+GH_PROXY="https://gh-proxy.com/"
 
 # --- Node.js 配置 ---
 # Node.js 版本（默认 lts/*，也支持 "20" 或 "18" 等）
 NODE_VERSION="lts/*"
-# npm 镜像（国内用户可设置 https://registry.npmmirror.com）
-NPM_REGISTRY_MIRROR=""
+# npm 镜像，国内默认 npmmirror
+NPM_REGISTRY_MIRROR="https://registry.npmmirror.com"
+# Node.js 二进制镜像（nvm 下载 node 时使用）
+NODE_MIRROR="https://npmmirror.com/mirrors/node"
