@@ -1,6 +1,6 @@
 # Environment Setup
 
-分配新的docker时一键安装开发环境：gcc、Clash、Git、Claude Code、Codex CLI。
+分配新的docker时一键安装开发环境：gcc、tmux、Clash、Git、Claude Code、Codex CLI。
 
 **默认配置国内可直接使用，无需开启代理。**
 
@@ -22,6 +22,7 @@
 | 工具 | 用途 | 安装方式 | 依赖 |
 |------|------|----------|------|
 | **GCC / G++** | C/C++ 编译工具链 | 系统包管理器 | 无 |
+| **tmux** | 终端复用器 | 系统包管理器 | 无 |
 | **Node.js + NVM** | JavaScript 运行时，nvm 管理多版本 | Gitee 镜像 → gh-proxy 兜底 | curl, git |
 | **Git** | 版本控制 + 全局配置 | 系统包管理器 | 无 |
 | **Clash** | 代理/VPN（mihomo 内核） | 封装 clash-for-linux 安装器，走 gh-proxy | curl, wget, xz-utils |
@@ -140,6 +141,7 @@ setup.sh 入口
   ├─ 3. 初始化状态目录
   │
   ├─ gcc.sh     ← 系统包管理器
+  ├─ tmux.sh    ← 系统包管理器
   ├─ node.sh    ← NVM (Gitee → gh-proxy → 直连)
   │                 ↓ 设 NVM_NODEJS_ORG_MIRROR
   │                 ↓ nvm install node
@@ -193,6 +195,7 @@ setup/
 ├── modules/
 │   ├── common.sh                      # 公共库：日志、OS 检测、包管理器、幂等标记
 │   ├── gcc.sh                         # GCC/G++ 编译工具链
+│   ├── tmux.sh                        # tmux 终端复用器
 │   ├── node.sh                        # NVM + Node.js（三级 fallback）
 │   ├── git.sh                         # Git 安装 + 全局配置
 │   ├── clash.sh                       # Clash（封装已有安装器，注入 gh-proxy）

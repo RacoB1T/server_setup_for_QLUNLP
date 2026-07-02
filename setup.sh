@@ -51,6 +51,8 @@ MODULES_DIR="$SETUP_DIR/modules"
 # shellcheck disable=SC1090
 source "$MODULES_DIR/gcc.sh"
 # shellcheck disable=SC1090
+source "$MODULES_DIR/tmux.sh"
+# shellcheck disable=SC1090
 source "$MODULES_DIR/node.sh"
 # shellcheck disable=SC1090
 source "$MODULES_DIR/git.sh"
@@ -71,7 +73,7 @@ main() {
 
     # 按依赖顺序执行各模块
     # node 必须在 claude/codex 之前
-    local modules=(gcc node git clash claude codex)
+    local modules=(gcc tmux node git clash claude codex)
     local has_error=false
 
     for module in "${modules[@]}"; do
